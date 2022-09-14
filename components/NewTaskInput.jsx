@@ -1,7 +1,9 @@
 import { AiOutlinePlusSquare } from "react-icons/ai";
+import { useState } from "react";
+
+// Firebase Imports
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "../firebaseConfig";
-import { useState } from "react";
 
 const NewTaskInput = () => {
   const [newTask, setNewTask] = useState("");

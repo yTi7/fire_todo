@@ -1,29 +1,34 @@
-import { useState } from "react";
 import { TiDelete } from "react-icons/ti";
 
-const Task = ({ task, tasks, setTasks, idx }) => {
-  const [status, setStatus] = useState(task.completed);
-  const toggleStatus = (e) => {
-    e.preventDefault();
-    setStatus(!status);
+// Firebase Imports
+import { db } from "../firebaseConfig";
+import { doc, deleteDoc, updateDoc } from "firebase/firestore";
+
+const Task = ({ task, id }) => {
+  const status = task.completed;
+  const toggleStatus = async (id) => {
+    const docRef = doc(db, "tasks", id);
+    await updateDoc(docRef, {
+      completed: !status,
+    });
   };
-  const handleDelete = (idx) => {
-    console.log(tasks)
-    const updatedTasks = tasks.filter(todo)
+  const handleDelete = async (id) => {
+    const docRef = doc(db, "tasks", id);
+    await deleteDoc(docRef);
   };
   return (
     <>
       <div className="taskWrapper">
         <h4
           className={`taskTitle ${status ? "completed" : ""}`}
-          onClick={toggleStatus}
+          onClick={() => toggleStatus(task.id)}
         >
           {task.title}
         </h4>
         <button
           onClick={(e) => {
             e.preventDefault();
-            handleDelete(idx);
+            handleDelete(task.id);
           }}
         >
           <TiDelete />
